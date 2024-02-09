@@ -8,15 +8,21 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const bodyStyle = {
+    backgroundImage: "url('/images/Background.png')",
+    height: "300px",
+    width: "100%",
+  };
+
   return (
     <html lang="en">
       <body>
-        <div className="flex">
-          <Sidebar />
-          <div>
+          <div style={bodyStyle} className="flex">
+            <Sidebar />
+            <div className=" flex flex-col flex-grow">
             <Navbar />
-            {children}
-          </div>
+             <main className="flex-grow">{children}</main> 
+            </div>
         </div>
       </body>
     </html>
