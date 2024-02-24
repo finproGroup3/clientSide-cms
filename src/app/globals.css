@@ -2,3 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+    font-family: "Poppins", sans-serif;
+}
+
+button, [type='button'].button, [type='button'].ant-btn-primary {
+    background-color: #1677ff;
+}
+
+button, [type='button'].ant-btn-dangerous {
+    background-color: #ff4d4f;
+}
