@@ -35,7 +35,7 @@ function Store({ id }) {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-4">Store Information</h1>
+            <h1 className='text-2xl font-semibold text-white mb-9'>Store Information</h1>
             <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                 <div className="flex justify-between">
                     <div className="mb-8">

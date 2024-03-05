@@ -131,7 +131,7 @@ const PromoPage = () => {
     return (
         <div className='p-5'>
             <div className="flex justify-between">
-                <h1>Promos</h1>
+            <h1 className='text-2xl font-semibold text-white mb-9'>All Promo</h1>
                 <Link href="/promo/add-promo">
                     <Button type="primary" color="blue">+ Add Promo</Button>
                 </Link>

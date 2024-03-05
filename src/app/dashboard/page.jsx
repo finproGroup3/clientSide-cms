@@ -47,37 +47,84 @@ const Dashboard = () => {
     const [open, setOpen] = React.useState(false);
     const [topBuyers, setTopBuyers] = useState([]);
     const [topProducts, setTopProducts] = useState([]);
+    const [totalUsers, setTotalUsers] = useState();
+    const [itemSold, setItemSold] = useState();
+    const [totalRevenue, setTotalRevenue] = useState();
+
+    const fetchTotalUsers = async () => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/users/count/all`);
+            const data = await response.json();
+            if (response.ok) {
+                setTotalUsers(data.totalUsers);
+            } else {
+                console.error(`Failed to fetch total users: ${data.message}`);
+            }
+        } catch (error) {
+            console.error('Error fetching total users:', error);
+        }
+    };
+    const fetchTotalSoldItem = async () => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/order/count/soldItem`);
+            const data = await response.json();
+            if (response.ok) {
+                setItemSold(data.totalProductsSold);
+            } else {
+                console.error(`Failed to fetch total users: ${data.message}`);
+            }
+        } catch (error) {
+            console.error('Error fetching total users:', error);
+        }
+    };
+    const fetchTotalRevenue = async () => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_URL_BACKEND}/order/count/nettPrice`);
+            const data = await response.json();
+            if (response.ok) {
+                const formattedRevenue = data.totalNettPriceSucceed.toLocaleString('id-ID');
+                setTotalRevenue(formattedRevenue);
+            } else {
+                console.error(`Failed to fetch total users: ${data.message}`);
+            }
+        } catch (error) {
+            console.error('Error fetching total users:', error);
+        }
+    };
+
+    const fetchTopBuyers = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_URL_BACKEND}/order/top-buyers`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setTopBuyers(response.data.data);
+        } catch (error) {
+            console.error('Error fetching top buyers:', error);
+        }
+    };
+
+    const fetchTopProducts = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_URL_BACKEND}/order/top/product`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setTopProducts(response.data.data);
+        } catch (error) {
+            console.error('Error fetching top products:', error);
+        }
+    };
     useEffect(() => {
-        const fetchTopBuyers = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_URL_BACKEND}/order/top-buyers`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setTopBuyers(response.data.data);
-            } catch (error) {
-                console.error('Error fetching top buyers:', error);
-            }
-        };
-
-        const fetchTopProducts = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_URL_BACKEND}/order/top/product`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setTopProducts(response.data.data);
-            } catch (error) {
-                console.error('Error fetching top products:', error);
-            }
-        };
-
         fetchTopBuyers();
         fetchTopProducts();
+        fetchTotalUsers();
+        fetchTotalSoldItem();
+        fetchTotalRevenue();
     }, []);
     const chartRef = useRef(null);
     const chartInstance = useRef(null);
@@ -99,7 +146,7 @@ const Dashboard = () => {
                     datasets: [
                         {
                             label: 'Revenue',
-                            data: [65, 59, 80, 81, 56, 55, 40, 70, 65, 80, 85, 60], // Updated data for all twelve months
+                            data: [2, 3, 2, 0, 2, 5, 3, 2, 1, 4, 2, 1], // Updated data for all twelve months
                             backgroundColor: 'rgba(49, 130, 206, 1)', // Set opacity to 1
                             borderColor: 'rgba(49, 130, 206, 1)',
                             borderWidth: 1,
@@ -145,21 +192,32 @@ const Dashboard = () => {
                     <div className='flex justify-between p-5 bg-white shadow-lg rounded-md'>
                         <div>
                             <p>TOTAL USERS</p>
-                            <p>2.503</p>
+                            {totalUsers ? (
+                                <p>{totalUsers}</p>
+                            )
+                                : null}
                         </div>
                         <Image src={User} alt="User" />
                     </div>
                     <div className='flex justify-between p-5 bg-white shadow-lg rounded-md'>
                         <div>
                             <p>TOTAL ITEMS SOLD</p>
-                            <p>2.503</p>
+                            {itemSold ? (
+                                <p>{itemSold}</p>
+                            )
+                                : null}
+
                         </div>
                         <Image src={Item} alt="User" />
                     </div>
                     <div className='flex justify-between p-5 bg-white shadow-lg rounded-md'>
                         <div>
                             <p>TOTAL REVENUE</p>
-                            <p>2.503</p>
+                            {totalRevenue ? (
+                                <p>{totalRevenue}</p>
+                            )
+                                : null}
+
                         </div>
                         <Image src={Revenue} alt="User" />
                     </div>

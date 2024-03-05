@@ -35,7 +35,6 @@ const Navbar = () => {
             width={24}
             height={24}
           />
-          <p variant="gradient" className="cursor-pointer ml-2" onClick={() => router.push('/login')}>Sign In</p>
         </div>
 
         {/* Logos (Replace with your actual logo components) */}

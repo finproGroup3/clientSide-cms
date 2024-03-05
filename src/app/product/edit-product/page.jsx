@@ -23,8 +23,7 @@ const EditProductPage = ({ searchParams }) => {
     const [fileList, setFileList] = useState();
     const [categories, setCategories] = useState([]);
     const [value, setValue] = useState("");
-    useEffect(() => {
-        const fetchProductById = async () => {
+    const fetchProductById = async () => {
             try {
                 const token = localStorage.getItem('token');
                 const response = await axios.get(`${process.env.NEXT_PUBLIC_URL_BACKEND}/product/${productId}`, {
@@ -80,6 +79,7 @@ const EditProductPage = ({ searchParams }) => {
                 console.error('Error fetching categories:', error);
             }
         };
+    useEffect(() => {
         fetchProductById();
         fetchCategories();
     }, [productId]);

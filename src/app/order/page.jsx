@@ -29,8 +29,12 @@ const OrderPage = () => {
     useEffect(() => {
         fetchOrders();
     }, [token]);
-    const formatIDR = (amount) => {
-        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(amount);
+    const formatIDR = (price) => {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+        }).format(price);
     };
     const handleAccept = async (id) => {
         const confirmed = await Swal.fire({
@@ -231,7 +235,8 @@ const OrderPage = () => {
     ].map((column, index) => ({ ...column, key: index + 1 }));
 
     return (
-        <div>
+        <div className='p-5'>
+            <h1 className='text-2xl font-semibold text-white mb-9'>All Order</h1>
             <div className='w-[1150px]'>
                 <Table dataSource={orders} columns={columns} scroll={{
                     x: 300,

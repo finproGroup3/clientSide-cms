@@ -1,7 +1,6 @@
 "use client"
 import React, { useRef, useState, useEffect } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation'
 import Swal from 'sweetalert2';
 import { SearchOutlined } from '@ant-design/icons';
 import { Button, Input, Space, Table } from 'antd';
@@ -184,7 +183,13 @@ const Page = () => {
                 text
             ),
     });
-
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+        }).format(price);
+    };
     const columns = [
         {
             title: 'No',
@@ -201,6 +206,7 @@ const Page = () => {
             dataIndex: 'price',
             defaultSortOrder: 'descend',
             sorter: (a, b) => a.price - b.price,
+            render: (price) => formatPrice(price), // Format the price using the formatPrice function
         },
         {
             title: 'Weight',
@@ -225,6 +231,22 @@ const Page = () => {
                 {
                     text: 'baju',
                     value: 'baju',
+                },
+                {
+                    text: 'celana',
+                    value: 'celana',
+                },
+                {
+                    text: 'perlengkapan',
+                    value: 'perlengkapan',
+                },
+                {
+                    text: 'mainan',
+                    value: 'mainan',
+                },
+                {
+                    text: 'pakaian',
+                    value: 'pakaian',
                 },
             ],
             onFilter: (value, record) => record.categoryName.toLowerCase().includes(value.toLowerCase()),
@@ -251,7 +273,7 @@ const Page = () => {
     return (
         <div className='p-5'>
             <div className='flex justify-between'>
-                <h1 className='text-2xl font-semibold'>All Products</h1>
+                <h1 className='text-2xl font-semibold text-white'>All Products</h1>
                 <Link href="/product/add-product">
                     <Button type="primary" color="blue">+ Add Product</Button>
                 </Link>
